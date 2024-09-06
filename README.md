@@ -15,7 +15,6 @@ Sponsored by <a href="https://formspark.io">Formspark</a>, the simple & powerful
 Add the Formson script.
 
 ```html
-
 <script src="https://unpkg.com/@formspark/formson"></script>
 ```
 
@@ -30,28 +29,28 @@ const json = Formson.toJSON(formData);
 ```html
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <script src="https://unpkg.com/@formspark/formson"></script>
-</head>
-<body>
-<h1>Example</h1>
-<form id="form">
-    <input name="firstName"/>
-    <input name="lastName"/>
-    <button type="submit">Submit</button>
-</form>
+  </head>
+  <body>
+    <h1>Example</h1>
+    <form id="form">
+      <input name="firstName" />
+      <input name="lastName" />
+      <button type="submit">Submit</button>
+    </form>
 
-<script>
-    document
-            .getElementById("form")
-            .addEventListener("submit", function (event) {
-                event.preventDefault();
-                const formData = new FormData(this);
-                const json = Formson.toJSON(formData);
-                alert(JSON.stringify(json, null, 2));
-            });
-</script>
-</body>
+    <script>
+      document
+        .getElementById("form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const json = Formson.toJSON(formData);
+          alert(JSON.stringify(json, null, 2));
+        });
+    </script>
+  </body>
 </html>
 ```
 
