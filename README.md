@@ -2,10 +2,17 @@
 
 Formson is a FormData to JSON converter.
 
-It supports:
+Features:
 
 - Dot notation for (nested) objects
-- Square brackets for arrays
+- Square bracket notation for (nested) arrays
+- Support for data structures combining objects and arrays
+- Lightweight
+- Zero dependencies
+- TypeScript support
+- 100% test coverage
+
+Sponsored by <a href="https://formspark.io">Formspark</a>, the simple & powerful form solution for developers.
 
 ## Installation
 
@@ -15,7 +22,7 @@ Add the Formson script.
 <script src="https://unpkg.com/@formspark/formson"></script>
 ```
 
-You can now use the `Formson.toJSON` function to convert a `FormData` object to a JSON object.
+You can now use the `Formson.toJSON` function to convert a FormData object to a JSON object.
 
 ```javascript
 const json = Formson.toJSON(formData);
@@ -50,10 +57,6 @@ const json = Formson.toJSON(formData);
   </body>
 </html>
 ```
-
-## Sponsor
-
-Sponsored by <a href="https://formspark.io">Formspark</a>, the simple & powerful form solution for developers.
 
 ## License
 
