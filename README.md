@@ -105,10 +105,13 @@ You can mix dot and square bracket notation to create complex structures.
 ```html
 <form>
   <input type="text" name="user.name" value="John Doe" />
+
   <input type="text" name="user.skills[0]" value="JavaScript" />
   <input type="text" name="user.skills[1]" value="TypeScript" />
+    
   <input type="text" name="user.address.street" value="123 Main St" />
   <input type="text" name="user.address.city" value="Anytown" />
+    
   <input type="text" name="user.projects[0].name" value="Project A" />
   <input type="text" name="user.projects[0].tasks[0]" value="Task 1" />
   <input type="text" name="user.projects[0].tasks[1]" value="Task 2" />
