@@ -80,7 +80,7 @@ This will result in the following JSON structure:
 
 ### Square bracket notation
 
-Square bracket notation uses square brackets (`[]`) to create arrays and nested objects.
+Square bracket notation uses square brackets (`[]`) to create arrays.
 
 ```html
 <form>
