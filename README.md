@@ -47,7 +47,7 @@ const json = Formson.toJSON(formData);
           event.preventDefault();
           const formData = new FormData(this);
           const json = Formson.toJSON(formData);
-          alert(JSON.stringify(json, null, 2));
+          alert(JSON.stringify(json));
         });
     </script>
   </body>
