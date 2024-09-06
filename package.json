@@ -1,0 +1,37 @@
+{
+  "name": "@formspark/formson",
+  "description": "FormData to JSON converter",
+  "private": false,
+  "version": "0.1.1",
+  "author": "Bjorn Krols (https://formspark.io)",
+  "license": "MIT",
+  "keywords": [
+    "form data",
+    "form",
+    "formdata",
+    "json"
+  ],
+  "homepage": "https://github.com/formspark/formson#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formspark/formson.git"
+  },
+  "bugs": {
+    "url": "https://github.com/formspark/formson/issues"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "unpkg": "dist/index.global.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "format": "prettier --write . --ignore-path .gitignore",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}
