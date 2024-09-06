@@ -12,7 +12,7 @@ It supports:
 Add the Formson script.
 
 ```html
-<script src="https://unpkg.com/@formspark/formson" async></script>
+<script src="https://unpkg.com/@formspark/formson"></script>
 ```
 
 You can now use the `Formson.toJSON` function to convert a `FormData` object to a JSON object.
