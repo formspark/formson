@@ -103,7 +103,7 @@ This will result in the following JSON structure:
 You can mix dot and square bracket notation to create complex structures.
 
 ```html
-<form id="complexForm">
+<form>
   <input type="text" name="user.name" value="John Doe" />
   <input type="text" name="user.skills[0]" value="JavaScript" />
   <input type="text" name="user.skills[1]" value="TypeScript" />
