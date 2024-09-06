@@ -4,8 +4,8 @@ Formson is a FormData to JSON converter.
 
 It supports:
 
-- Dot notation
-- Square bracket notation
+- Dot notation to create nestable objects
+- Square bracket notation to create arrays
 - Mixed object/array structures
 
 Sponsored by <a href="https://formspark.io">Formspark</a>, the simple & powerful form solution for developers.
@@ -24,7 +24,9 @@ You can now use the `Formson.toJSON` function to convert a FormData object to a 
 const json = Formson.toJSON(formData);
 ```
 
-## Example
+## Examples
+
+### Basic example
 
 ```html
 <!doctype html>
@@ -52,6 +54,93 @@ const json = Formson.toJSON(formData);
     </script>
   </body>
 </html>
+```
+
+### Dot notation
+
+Dot notation uses periods (`.`) to create nested objects.
+
+```html
+<form>
+  <input name="user.firstName" value="John" />
+  <input name="user.lastName" value="Doe" />
+</form>
+```
+
+This will result in the following JSON structure:
+
+```json
+{
+  "user": {
+    "firstName": "John",
+    "lastName": "Doe"
+  }
+}
+```
+
+### Square bracket notation
+
+Square bracket notation uses square brackets (`[]`) to create arrays and nested objects.
+
+```html
+<form>
+  <input name="users[0]" value="Alice" />
+  <input name="users[1]" value="Bob" />
+  <input name="users[2]" value="Charlie" />
+</form>
+```
+
+This will result in the following JSON structure:
+
+```json
+{
+  "users": ["Alice", "Bob", "Charlie"]
+}
+```
+
+### Complex structure
+
+You can mix dot and square bracket notation to create complex structures.
+
+```html
+<form id="complexForm">
+  <input type="text" name="user.name" value="John Doe" />
+  <input type="text" name="user.skills[0]" value="JavaScript" />
+  <input type="text" name="user.skills[1]" value="TypeScript" />
+  <input type="text" name="user.address.street" value="123 Main St" />
+  <input type="text" name="user.address.city" value="Anytown" />
+  <input type="text" name="user.projects[0].name" value="Project A" />
+  <input type="text" name="user.projects[0].tasks[0]" value="Task 1" />
+  <input type="text" name="user.projects[0].tasks[1]" value="Task 2" />
+  <input type="text" name="user.projects[1].name" value="Project B" />
+  <input type="text" name="user.projects[1].tasks[0]" value="Task 3" />
+  <button type="submit">Submit</button>
+</form>
+```
+
+This will result in the following JSON structure:
+
+```json
+{
+  "user": {
+    "name": "John Doe",
+    "skills": ["JavaScript", "TypeScript"],
+    "address": {
+      "street": "123 Main St",
+      "city": "Anytown"
+    },
+    "projects": [
+      {
+        "name": "Project A",
+        "tasks": ["Task 1", "Task 2"]
+      },
+      {
+        "name": "Project B",
+        "tasks": ["Task 3"]
+      }
+    ]
+  }
+}
 ```
 
 ## License
