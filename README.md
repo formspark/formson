@@ -2,15 +2,12 @@
 
 Formson is a FormData to JSON converter.
 
-Features:
-
-- Dot notation for (nested) objects
-- Square bracket notation for (nested) arrays
-- Support for data structures combining objects and arrays
-- Lightweight
-- Zero dependencies
-- TypeScript support
-- 100% test coverage
+- Lightweight, zero dependencies
+- TypeScript & 100% test coverage
+- Supports:
+  - Dot notation
+  - Square bracket notation
+  - Mixed object/array structures
 
 Sponsored by <a href="https://formspark.io">Formspark</a>, the simple & powerful form solution for developers.
 
