@@ -132,6 +132,25 @@ describe("formson", () => {
       });
     });
 
+    test("ignores prototype-pollution keys", () => {
+      const formData = new FormData();
+      formData.append("__proto__.polluted", "yes");
+      formData.append("constructor.prototype.polluted", "yes");
+      formData.append("a.__proto__.polluted", "yes");
+      formData.append("safe", "ok");
+      const json = toJSON(formData);
+      expect(json).toEqual({ safe: "ok" });
+      expect(({} as any).polluted).toBeUndefined();
+    });
+
+    test("rejects oversized array indices", () => {
+      const formData = new FormData();
+      formData.append("items[999999999]", "x");
+      const json = toJSON(formData);
+      expect(Array.isArray((json as any).items)).toBe(false);
+      expect((json as any).items).toEqual({ "999999999": "x" });
+    });
+
     test("non-sequential array indices", () => {
       const formData = new FormData();
       formData.append("numbers[0]", "A");
