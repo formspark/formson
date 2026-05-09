@@ -191,11 +191,16 @@ describe("formson", () => {
       expect(toJSON(formData)).toEqual({ items: { "-1": "x" } });
     });
 
-    test("dots inside brackets are still split (parser quirk)", () => {
+    test("float indices become object keys", () => {
       const formData = new FormData();
       formData.append("items[1.5]", "x");
-      const json = toJSON(formData);
-      expect((json as any).items[1][5]).toBe("x");
+      expect(toJSON(formData)).toEqual({ items: { "1.5": "x" } });
+    });
+
+    test("dots inside brackets are treated as part of the key", () => {
+      const formData = new FormData();
+      formData.append("items[a.b]", "x");
+      expect(toJSON(formData)).toEqual({ items: { "a.b": "x" } });
     });
 
     test("empty brackets collapse to a scalar key", () => {
