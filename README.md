@@ -4,7 +4,7 @@ Formson is a FormData to JSON converter.
 
 It supports:
 
-- Dot notation to create nestable objects
+- Dot notation to create nested objects
 - Square bracket notation to create arrays
 - Mixed object/array structures
 

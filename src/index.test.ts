@@ -132,6 +132,103 @@ describe("formson", () => {
       });
     });
 
+    test("empty form data", () => {
+      expect(toJSON(new FormData())).toEqual({});
+    });
+
+    test("empty string values are preserved", () => {
+      const formData = new FormData();
+      formData.append("note", "");
+      expect(toJSON(formData)).toEqual({ note: "" });
+    });
+
+    test("repeated key keeps the last value", () => {
+      const formData = new FormData();
+      formData.append("tag", "first");
+      formData.append("tag", "second");
+      expect(toJSON(formData)).toEqual({ tag: "second" });
+    });
+
+    test("File values pass through unchanged", () => {
+      const file = new File(["hello"], "hello.txt", { type: "text/plain" });
+      const formData = new FormData();
+      formData.append("upload", file);
+      expect(toJSON(formData).upload).toBe(file);
+    });
+
+    test("scalar then nested overwrites the scalar", () => {
+      const formData = new FormData();
+      formData.append("user", "John");
+      formData.append("user.age", "30");
+      expect(toJSON(formData)).toEqual({ user: { age: "30" } });
+    });
+
+    test("nested then scalar overwrites the object", () => {
+      const formData = new FormData();
+      formData.append("user.age", "30");
+      formData.append("user", "John");
+      expect(toJSON(formData)).toEqual({ user: "John" });
+    });
+
+    test("MAX_ARRAY_INDEX boundary: 10000 is an array", () => {
+      const formData = new FormData();
+      formData.append("items[10000]", "x");
+      const json = toJSON(formData);
+      expect(Array.isArray((json as any).items)).toBe(true);
+    });
+
+    test("just past MAX_ARRAY_INDEX: 10001 is an object key", () => {
+      const formData = new FormData();
+      formData.append("items[10001]", "x");
+      const json = toJSON(formData);
+      expect(Array.isArray((json as any).items)).toBe(false);
+      expect((json as any).items).toEqual({ "10001": "x" });
+    });
+
+    test("negative indices become object keys", () => {
+      const formData = new FormData();
+      formData.append("items[-1]", "x");
+      expect(toJSON(formData)).toEqual({ items: { "-1": "x" } });
+    });
+
+    test("float indices become object keys", () => {
+      const formData = new FormData();
+      formData.append("items[1.5]", "x");
+      expect(toJSON(formData)).toEqual({ items: { "1.5": "x" } });
+    });
+
+    test("dots inside brackets are treated as part of the key", () => {
+      const formData = new FormData();
+      formData.append("items[a.b]", "x");
+      expect(toJSON(formData)).toEqual({ items: { "a.b": "x" } });
+    });
+
+    test("empty brackets collapse to a scalar key", () => {
+      const formData = new FormData();
+      formData.append("items[]", "a");
+      formData.append("items[]", "b");
+      expect(toJSON(formData)).toEqual({ items: "b" });
+    });
+
+    test("ignores prototype-pollution keys", () => {
+      const formData = new FormData();
+      formData.append("__proto__.polluted", "yes");
+      formData.append("constructor.prototype.polluted", "yes");
+      formData.append("a.__proto__.polluted", "yes");
+      formData.append("safe", "ok");
+      const json = toJSON(formData);
+      expect(json).toEqual({ safe: "ok" });
+      expect(({} as any).polluted).toBeUndefined();
+    });
+
+    test("rejects oversized array indices", () => {
+      const formData = new FormData();
+      formData.append("items[999999999]", "x");
+      const json = toJSON(formData);
+      expect(Array.isArray((json as any).items)).toBe(false);
+      expect((json as any).items).toEqual({ "999999999": "x" });
+    });
+
     test("non-sequential array indices", () => {
       const formData = new FormData();
       formData.append("numbers[0]", "A");
