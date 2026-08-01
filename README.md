@@ -12,6 +12,24 @@ Sponsored by <a href="https://formspark.io">Formspark</a>, the simple & powerful
 
 ## Installation
 
+### npm
+
+Install the package.
+
+```bash
+npm install @formspark/formson
+```
+
+You can now import the `toJSON` function to convert a FormData object to a JSON object.
+
+```javascript
+import { toJSON } from "@formspark/formson";
+
+const json = toJSON(formData);
+```
+
+### Script tag
+
 Add the Formson script.
 
 ```html
@@ -108,10 +126,10 @@ You can mix dot and square bracket notation to create complex structures.
 
   <input type="text" name="user.skills[0]" value="JavaScript" />
   <input type="text" name="user.skills[1]" value="TypeScript" />
-    
+
   <input type="text" name="user.address.street" value="123 Main St" />
   <input type="text" name="user.address.city" value="Anytown" />
-    
+
   <input type="text" name="user.projects[0].name" value="Project A" />
   <input type="text" name="user.projects[0].tasks[0]" value="Task 1" />
   <input type="text" name="user.projects[0].tasks[1]" value="Task 2" />

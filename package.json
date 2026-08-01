@@ -2,7 +2,7 @@
   "name": "@formspark/formson",
   "description": "FormData to JSON converter",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "Bjorn Krols (https://formspark.io)",
   "license": "MIT",
   "keywords": [
@@ -23,16 +23,34 @@
   "module": "dist/index.mjs",
   "unpkg": "dist/index.global.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "tsup",
     "format": "prettier --write . --ignore-path .gitignore",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.1.5",
-    "prettier": "^3.8.3",
+    "@vitest/coverage-v8": "^4.1.10",
+    "prettier": "^3.9.6",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.5"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
   }
 }
