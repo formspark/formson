@@ -49,3 +49,8 @@ export const toJSON = function (formData: FormData): Record<string, any> {
 
   return object;
 };
+
+/* Default export must stay: some consumers import this module as a
+   single default value and call `.toJSON` off it rather than
+   destructuring the named export. */
+export default { toJSON };

@@ -229,6 +229,48 @@ describe("formson", () => {
       expect((json as any).items).toEqual({ "999999999": "x" });
     });
 
+    test("top-level bracket index becomes an object key", () => {
+      const formData = new FormData();
+      formData.append("[0]", "x");
+      expect(toJSON(formData)).toEqual({ "0": "x" });
+    });
+
+    test("consecutive dots collapse", () => {
+      const formData = new FormData();
+      formData.append("a..b", "x");
+      expect(toJSON(formData)).toEqual({ a: { b: "x" } });
+    });
+
+    test("trailing dot is ignored", () => {
+      const formData = new FormData();
+      formData.append("a.", "x");
+      expect(toJSON(formData)).toEqual({ a: "x" });
+    });
+
+    test("dot-only key is dropped", () => {
+      const formData = new FormData();
+      formData.append(".", "x");
+      expect(toJSON(formData)).toEqual({});
+    });
+
+    test("whitespace in keys is preserved verbatim", () => {
+      const formData = new FormData();
+      formData.append(" spaced key ", "x");
+      expect(toJSON(formData)).toEqual({ " spaced key ": "x" });
+    });
+
+    test("File values in array notation stay Files", () => {
+      const a = new File(["a"], "a.txt", { type: "text/plain" });
+      const b = new File(["b"], "b.txt", { type: "text/plain" });
+      const formData = new FormData();
+      formData.append("attachments[0]", a);
+      formData.append("attachments[1]", b);
+      const json = toJSON(formData);
+      expect(json.attachments).toEqual([a, b]);
+      expect(json.attachments[0]).toBe(a);
+      expect(json.attachments[1]).toBe(b);
+    });
+
     test("non-sequential array indices", () => {
       const formData = new FormData();
       formData.append("numbers[0]", "A");
