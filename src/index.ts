@@ -50,6 +50,7 @@ export const toJSON = function (formData: FormData): Record<string, any> {
   return object;
 };
 
-/* Node ESM consumers of the pre-exports-map builds received the CJS
-   namespace as a default import, so a default export must remain. */
+/* Default export must stay: some consumers import this module as a
+   single default value and call `.toJSON` off it rather than
+   destructuring the named export. */
 export default { toJSON };
