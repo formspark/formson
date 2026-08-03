@@ -116,6 +116,23 @@ This will result in the following JSON structure:
 }
 ```
 
+### Repeated field names
+
+A field name repeated without brackets, such as a checkbox group, also becomes an array.
+
+```html
+<form>
+  <input type="checkbox" name="interests" value="music" checked />
+  <input type="checkbox" name="interests" value="sports" checked />
+</form>
+```
+
+```json
+{
+  "interests": ["music", "sports"]
+}
+```
+
 ### Complex structure
 
 You can mix dot and square bracket notation to create complex structures.

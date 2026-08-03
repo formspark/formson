@@ -142,11 +142,31 @@ describe("formson", () => {
       expect(toJSON(formData)).toEqual({ note: "" });
     });
 
-    test("repeated key keeps the last value", () => {
+    test("repeated key becomes an array", () => {
       const formData = new FormData();
       formData.append("tag", "first");
       formData.append("tag", "second");
-      expect(toJSON(formData)).toEqual({ tag: "second" });
+      formData.append("tag", "third");
+      expect(toJSON(formData)).toEqual({ tag: ["first", "second", "third"] });
+    });
+
+    test("repeated key at a nested path becomes an array", () => {
+      const formData = new FormData();
+      formData.append("person.tags", "first");
+      formData.append("person.tags", "second");
+      expect(toJSON(formData)).toEqual({
+        person: { tags: ["first", "second"] },
+      });
+    });
+
+    test("repeated File values become an array", () => {
+      const a = new File(["a"], "a.txt", { type: "text/plain" });
+      const b = new File(["b"], "b.txt", { type: "text/plain" });
+      const formData = new FormData();
+      formData.append("uploads", a);
+      formData.append("uploads", b);
+      const json = toJSON(formData);
+      expect(json.uploads).toEqual([a, b]);
     });
 
     test("File values pass through unchanged", () => {
@@ -203,11 +223,11 @@ describe("formson", () => {
       expect(toJSON(formData)).toEqual({ items: { "a.b": "x" } });
     });
 
-    test("empty brackets collapse to a scalar key", () => {
+    test("empty brackets become an array, same as a repeated plain key", () => {
       const formData = new FormData();
       formData.append("items[]", "a");
       formData.append("items[]", "b");
-      expect(toJSON(formData)).toEqual({ items: "b" });
+      expect(toJSON(formData)).toEqual({ items: ["a", "b"] });
     });
 
     test("ignores prototype-pollution keys", () => {

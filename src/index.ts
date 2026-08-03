@@ -30,7 +30,20 @@ export const toJSON = function (formData: FormData): Record<string, any> {
         nextIndex <= MAX_ARRAY_INDEX;
 
       if (isLast) {
-        current[part] = value;
+        const existing = current[part];
+        if (Array.isArray(existing)) {
+          existing.push(value);
+        } else if (
+          existing !== undefined &&
+          !(typeof existing === "object" && existing.constructor === Object)
+        ) {
+          // A second plain occurrence of the same key (e.g. a checkbox
+          // group): promote to an array instead of overwriting, matching
+          // how repeated form fields are parsed server-side.
+          current[part] = [existing, value];
+        } else {
+          current[part] = value;
+        }
       } else {
         if (isNextArray) {
           if (!Array.isArray(current[part])) {
