@@ -3,10 +3,6 @@ import { toJSON } from "./index";
 
 describe("formson", () => {
   describe("toJSON", () => {
-    test("is a function", () => {
-      expect(toJSON).toBeTypeOf("function");
-    });
-
     test("regular", () => {
       const formData = new FormData();
       formData.append("firstName", "John");
@@ -195,6 +191,8 @@ describe("formson", () => {
       formData.append("items[10000]", "x");
       const json = toJSON(formData);
       expect(Array.isArray((json as any).items)).toBe(true);
+      expect(json.items).toHaveLength(10001);
+      expect(json.items[10000]).toBe("x");
     });
 
     test("just past MAX_ARRAY_INDEX: 10001 is an object key", () => {
@@ -239,14 +237,6 @@ describe("formson", () => {
       const json = toJSON(formData);
       expect(json).toEqual({ safe: "ok" });
       expect(({} as any).polluted).toBeUndefined();
-    });
-
-    test("rejects oversized array indices", () => {
-      const formData = new FormData();
-      formData.append("items[999999999]", "x");
-      const json = toJSON(formData);
-      expect(Array.isArray((json as any).items)).toBe(false);
-      expect((json as any).items).toEqual({ "999999999": "x" });
     });
 
     test("top-level bracket index becomes an object key", () => {
