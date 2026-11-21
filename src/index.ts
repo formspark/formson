@@ -11,13 +11,13 @@ const parsePath = (key: string): string[] => {
   return parts;
 };
 
-export const toJSON = function (formData: FormData): Record<string, any> {
-  const object: Record<string, any> = {};
+export const toJSON = function (formData: FormData): Record<string, unknown> {
+  const object: Record<string, unknown> = {};
 
   formData.forEach((value, key) => {
     const parts = parsePath(key);
     if (parts.some((part) => UNSAFE_KEYS.has(part))) return;
-    let current = object;
+    let current: object = object;
 
     parts.forEach((part, index) => {
       const isLast = index === parts.length - 1;
@@ -29,32 +29,36 @@ export const toJSON = function (formData: FormData): Record<string, any> {
         nextIndex >= 0 &&
         nextIndex <= MAX_ARRAY_INDEX;
 
+      const existing: unknown = Object.getOwnPropertyDescriptor(
+        current,
+        part,
+      )?.value;
       if (isLast) {
-        const existing = current[part];
         if (Array.isArray(existing)) {
           existing.push(value);
         } else if (
           existing !== undefined &&
-          !(typeof existing === "object" && existing.constructor === Object)
+          !(
+            typeof existing === "object" &&
+            existing !== null &&
+            existing.constructor === Object
+          )
         ) {
-          // A second plain occurrence of the same key (e.g. a checkbox
-          // group): promote to an array instead of overwriting, matching
-          // how repeated form fields are parsed server-side.
-          current[part] = [existing, value];
+          // Repeated fields, such as checkbox groups, collect their values.
+          Reflect.set(current, part, [existing, value]);
         } else {
-          current[part] = value;
+          Reflect.set(current, part, value);
         }
       } else {
         if (isNextArray) {
-          if (!Array.isArray(current[part])) {
-            current[part] = [];
-          }
-          current = current[part];
+          const next = Array.isArray(existing) ? existing : [];
+          Reflect.set(current, part, next);
+          current = next;
         } else {
-          if (!(typeof current[part] === "object" && current[part] !== null)) {
-            current[part] = {};
-          }
-          current = current[part];
+          const next =
+            typeof existing === "object" && existing !== null ? existing : {};
+          Reflect.set(current, part, next);
+          current = next;
         }
       }
     });
