@@ -29,11 +29,11 @@ export const toJSON = function (formData: FormData): Record<string, unknown> {
         nextIndex >= 0 &&
         nextIndex <= MAX_ARRAY_INDEX;
 
+      const existing: unknown = Object.getOwnPropertyDescriptor(
+        current,
+        part,
+      )?.value;
       if (isLast) {
-        const existing: unknown = Object.getOwnPropertyDescriptor(
-          current,
-          part,
-        )?.value;
         if (Array.isArray(existing)) {
           existing.push(value);
         } else if (
@@ -50,10 +50,6 @@ export const toJSON = function (formData: FormData): Record<string, unknown> {
           Reflect.set(current, part, value);
         }
       } else {
-        const existing: unknown = Object.getOwnPropertyDescriptor(
-          current,
-          part,
-        )?.value;
         if (isNextArray) {
           const next = Array.isArray(existing) ? existing : [];
           Reflect.set(current, part, next);
